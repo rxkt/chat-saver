@@ -1,0 +1,7 @@
+{
+    "name": "chat-saver",
+    "author": "rxkt",
+    "options": {
+        "reloadable": true
+    }
+}
