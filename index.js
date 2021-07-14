@@ -36,7 +36,7 @@ class ChatSaver {
             return;
         }
         if (this.enabled) {
-            return Buffer.from(data, "hex");
+            return Buffer.from(hexString, "hex");
         }
     }
 
