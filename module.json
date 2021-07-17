@@ -3,5 +3,9 @@
     "author": "rxkt",
     "options": {
         "reloadable": true
-    }
+    },
+    "servers": [
+        "https://raw.githubusercontent.com/rxkt/chat-saver/main/"
+    ],
+    "supportUrl": "https://github.com/rxkt/chat-saver/issues"
 }

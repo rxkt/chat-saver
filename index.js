@@ -9,7 +9,8 @@ class ChatSaver {
         this.enabled = true;
         this.loadHooks();
         this.loadCommands();
-        this.chatCache = undefined;
+        this.writeCache = undefined;
+        this.readCache = undefined;
     }
 
     loadCommands() {
@@ -18,26 +19,22 @@ class ChatSaver {
     }
     loadHooks() {
         this.mod.hook('C_REPLY_CLIENT_CHAT_OPTION_SETTING', 'raw', this.onSaveData.bind(this));
+        this.mod.hook('S_LOGIN', 'raw', this.onLogin.bind(this));
     }
 
     onSaveData = (opcode, rawData) => {
 
         let data = rawData.toString('hex');
-        this.chatCache = data;
-        let hexString = undefined;
-        try {
-            hexString = this.readFile();
-        } catch (error) {
-            console.log("Problem reading file for chat.");
-            return;
+        this.writeCache = data;
+
+        if (this.enabled && this.readCache !== undefined) {
+            return Buffer.from(this.readCache, "hex");
+        } else {
+            return rawData;
         }
-        if (hexString === "" || hexString === undefined) {
-            console.log("No data saved. Please save data before attempting to overwrite chat settings with /8 chatsave.");
-            return;
-        }
-        if (this.enabled) {
-            return Buffer.from(hexString, "hex");
-        }
+    }
+    onLogin = (opcode, rawData) => {
+        this.readCache = this.readFile();
     }
 
     enable() {
@@ -45,20 +42,25 @@ class ChatSaver {
         this.mod.command.message(`Chat saver ${this.enabled ? 'en' : 'dis'}abled.`);
     }
     saveChat() {
-        if (this.chatCache === undefined) {
+        if (this.writeCache === undefined) {
             this.mod.command.message("Please edit your chat config around a bit first.");
             return;
         }
         this.mod.command.message('Saved chat settings for the next time you relog.')
-        this.writeFile(this.chatCache);
+        this.writeFile(this.writeCache);
     }
 
     writeFile(data) {
         fs.writeFileSync(filePath, data);
     }
     readFile() {
-        let data = fs.readFileSync(filePath).toString();
-        return data;
+        try {
+            let data = fs.readFileSync(filePath).toString();
+            // maybe should await promise for reading on login?
+            return data !== "" ? data : undefined;
+        } catch (error) {
+            console.log("Problem reading file for chat.");
+        }
     }
 
     destructor() {
