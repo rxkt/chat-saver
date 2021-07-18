@@ -3,8 +3,7 @@
         "README.md": "ace181e2198bd8e13fdbde3081e2d6da1853a290c62f2b2071ce4f2ce14a5891",
         "defs/C_REPLY_CLIENT_CHAT_OPTION_SETTING.1.def": "18573151c71c0d375e0104913d997691c6840e0463d5d5eb8b4bf9cc80c936e8",
         "index.js": "434a3507ccbd2325c3cb66e813041225c32d811958682a35e60899b710f0d608",
-        "module.json": "0add2e5ae810f4d7bf875e1ef6879da43cd90f7480f071d5e72183fb51d8d831",
-        "savedchat.tmp": "44883785eefa34d2a93ff0b02af00e3c1fa6cd71f459e10e5c2f9dd7c041c430"
+        "module.json": "0add2e5ae810f4d7bf875e1ef6879da43cd90f7480f071d5e72183fb51d8d831"
     },
     "defs": {
         "C_REPLY_CLIENT_CHAT_OPTION_SETTING": "raw",
