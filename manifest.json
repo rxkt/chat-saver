@@ -1,12 +1,13 @@
 {
-    "files": {
-        "README.md": "ace181e2198bd8e13fdbde3081e2d6da1853a290c62f2b2071ce4f2ce14a5891",
-        "defs/C_REPLY_CLIENT_CHAT_OPTION_SETTING.1.def": "18573151c71c0d375e0104913d997691c6840e0463d5d5eb8b4bf9cc80c936e8",
-        "index.js": "434a3507ccbd2325c3cb66e813041225c32d811958682a35e60899b710f0d608",
-        "module.json": "0add2e5ae810f4d7bf875e1ef6879da43cd90f7480f071d5e72183fb51d8d831"
-    },
-    "defs": {
-        "C_REPLY_CLIENT_CHAT_OPTION_SETTING": "raw",
-        "S_LOGIN": "raw"
-    }
+	"files": {
+		"README.md": "ba05a70b9365d9dea6e14df1d9ca24ec78948150685fc7044c3d48efb81caea9",
+		"defs/C_REPLY_CLIENT_CHAT_OPTION_SETTING.1.def": "18573151c71c0d375e0104913d997691c6840e0463d5d5eb8b4bf9cc80c936e8",
+		"index.js": "1fadaa40ae160fd8147f2fc1f875a023949ba0bd9aee378b610fcb8220bad502",
+		"module.json": "8960044bd51c5b5e97f32768abb29fe6bc694cbf8d943f0455928cd934d6f3e7",
+		"savedchat.tmp": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b"
+	},
+	"defs": {
+		"C_REPLY_CLIENT_CHAT_OPTION_SETTING": "raw",
+		"S_LOGIN": "raw"
+	}
 }
