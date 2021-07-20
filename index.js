@@ -20,6 +20,7 @@ class ChatSaver {
     loadHooks() {
         this.mod.hook('S_LOGIN', 'raw', this.onLogin.bind(this));
         this.mod.hook('C_SAVE_CLIENT_CHAT_OPTION_SETTING', 2, this.onSave.bind(this));
+        this.mod.hook('S_RETURN_TO_LOBBY', 'raw', this.onLobbyReturn.bind(this));
         // if it fails, we may need to hook on C_REQUEST_CLIENT_CHAT_OPTION_SETTING
     }
 
@@ -27,6 +28,9 @@ class ChatSaver {
         this.readFile();
         this.loginComplete = true;
     }
+    onLobbyReturn() {
+        this.loginComplete = false;  
+    };
     onSave(event) {
         this.writeCache = { tabs: event.tabs, channels: event.channels };
         // block the packet when not logged into a character
