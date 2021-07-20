@@ -51,10 +51,8 @@ class ChatSaver {
             this.mod.send('C_SAVE_CLIENT_CHAT_OPTION_SETTING', 2, this.readCache);
             this.mod.command.message("Please relog to load settings.");
             this.loginComplete = false;
-            return false;
         } else {
             this.mod.command.message('No settings saved.');
-            return;
         }
     }
 
