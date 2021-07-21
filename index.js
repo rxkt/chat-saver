@@ -6,11 +6,17 @@ class ChatSaver {
 
     constructor(mod) {
         this.mod = mod;
+        this.loadDefinitions();
         this.loadHooks();
         this.loadCommands();
         this.writeCache = undefined;
         this.readCache = undefined;
         this.loginComplete = false;
+    }
+
+    loadDefinitions() {
+      this.mod.dispatch.protocol.loadCustomDefinitions(path.resolve(__dirname, 'defs'));
+      if (this.mod.dispatch.protocolVersion == 382688) this.mod.dispatch.addOpcode('C_SAVE_CLIENT_CHAT_OPTION_SETTING', 46250);
     }
 
     loadCommands() {
