@@ -3,10 +3,6 @@
   
   
 ### How to use:  
-  Add the definition from "defs" folder to your own proxy/data/defs folder.  
-  Add the opcode as needed.  
-  NA opcode as of Jul 14 2021:
-  `C_SAVE_CLIENT_CHAT_OPTION_SETTING 46250`  
   
   **To change settings:**  
   1. Change your chat settings to whatever your preferences are.  
