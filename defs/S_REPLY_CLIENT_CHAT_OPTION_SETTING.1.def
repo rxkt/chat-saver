@@ -1,0 +1,35 @@
+# See DataCenter.ChatClientConfigData
+
+ref   tabs
+ref   channels
+
+array tabs
+- ref   channels
+- ref   name
+- ref   defaultInputChannel
+- int16 index                   # This is the internal index, whereas user-defined tab order follows the array (According to the creation index).
+- float x                       # -1: default.
+- float y                       # -1: default.
+- int16 width
+- int16 height
+- int16 opacity
+- int16 fontSize
+- bool  undocked                # Unlocked, not attached to index 0.
+- bool  partyAutoInputChange
+- bool  autoInputChange
+- array<int32> channels         # Same index order as in options UI.
+                                # 0: Say, 1: Party, 2: Guild, 3: Area, 4: Trade, 5: Team, 7: Whisper, 9: Greetings, 19: Bargain, 20: LFG, 21: Party notice, 
+                                # 22: Leader notice, 25: Raid notice, 27: Global, 32: Raid, 33: Raid leader, 212: RP, 213: Megaphone, 214: Guild advertising, 
+                                # 215: LFG (Level-restricted), 11~18: Private Channels 1~8, 24: System, 201: Alerts, 202: World alerts, 203: Notices, 204: Party alerts, 
+                                # 205: Guild alerts, 206: Team alerts, 207: UI alerts, 208: Warnings, 210: XP acquired, 211: Gold acquired, 216: Common item acquired, 
+                                # 217: Uncommon item acquired, 218: Rare item acquired, 219: Superior item acquired, 101: Attacks, 102: Critical hits, 103: Damage from minions, 
+                                # 104: Crit damage from minions, 105: Falling damage, 106: Damage from monsters, 107: Crit damage from monsters, 108: Damage from bosses, 109: Crit damage from bosses
+
+- string name
+- string defaultInputChannel
+
+array channels                  # Custom coloring.
+- int32 id                      # Same index from channels.
+- byte  r
+- byte  g
+- byte  b
