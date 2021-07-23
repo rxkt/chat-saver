@@ -1,9 +1,9 @@
 const fs = require('fs');
 const path = require('path');
-const filePath = path.join(__dirname, ".config.json");
+// const filePath = path.join(__dirname, ".config.json");
+const configPath = path.join(__dirname, ".config");
 
 class ChatSaver {
-
     constructor(mod) {
         this.mod = mod;
         this.loadDefinitions();
@@ -11,37 +11,39 @@ class ChatSaver {
         this.loadCommands();
         this.writeCache = undefined;
         this.readCache = undefined;
-        this.loginComplete = false;
     }
 
     loadDefinitions() {
-      this.mod.dispatch.protocol.loadCustomDefinitions(path.resolve(__dirname, 'defs'));
-      if (this.mod.dispatch.protocolVersion == 382688) this.mod.dispatch.addOpcode('C_SAVE_CLIENT_CHAT_OPTION_SETTING', 46250);
+        this.mod.dispatch.protocol.loadCustomDefinitions(path.resolve(__dirname, 'defs'));
+        if (this.mod.dispatch.protocolVersion == 382688) this.mod.dispatch.addOpcode('C_SAVE_CLIENT_CHAT_OPTION_SETTING', 46250);
     }
-
     loadCommands() {
         this.mod.command.add('savechat', this.saveChat.bind(this));
         this.mod.command.add('loadchat', this.loadChat.bind(this));
     }
     loadHooks() {
-        this.mod.hook('S_LOGIN', 'raw', this.onLogin.bind(this));
+        this.mod.hook('S_LOGIN_ACCOUNT_INFO', 'raw', this.onAccountInfo.bind(this));
         this.mod.hook('C_SAVE_CLIENT_CHAT_OPTION_SETTING', 2, this.onSave.bind(this));
-        this.mod.hook('S_RETURN_TO_LOBBY', 'raw', this.onLobbyReturn.bind(this));
-        // if it fails, we may need to hook on C_REQUEST_CLIENT_CHAT_OPTION_SETTING
+        this.mod.hook('S_REPLY_CLIENT_CHAT_OPTION_SETTING', 1, this.onReplyClient.bind(this));
     }
 
-    onLogin() {
+    onAccountInfo() {
         this.readFile();
-        this.loginComplete = true;
     }
-    onLobbyReturn() {
-        this.loginComplete = false;  
-    };
     onSave(event) {
-        this.writeCache = { tabs: event.tabs, channels: event.channels };
-        // block the packet when not logged into a character
-        if (this.loginComplete === false) {
+        this.writeCache = event;
+        if (this.readCache) {
+            this.mod.send('C_SAVE_CLIENT_CHAT_OPTION_SETTING', 2, this.readCache);
             return false;
+        } else {
+            console.log('No settings found for this account.');
+        }
+    }
+    onReplyClient() {
+        // in case C_REQUEST_CLIENT_CHAT_OPTION_SETTING changes chat settings
+        // we send another keybind save packet
+        if (this.readCache) {
+            this.mod.send('C_SAVE_CLIENT_CHAT_OPTION_SETTING', 2, this.readCache);
         }
     }
 
@@ -50,33 +52,34 @@ class ChatSaver {
             this.mod.command.message("Please edit your chat config around a bit first.");
             return;
         }
-        this.mod.command.message('Saved chat settings for the next time you relog.');
+        this.mod.command.message('Saved chat settings.');
+        this.writeCache.accountId = Number(this.writeCache.accountId);
         this.writeFile(this.writeCache);
-        return true;
+        this.readCache = this.writeCache;
     }
     loadChat() {
         this.readFile();
         if (this.readCache !== undefined) {
-            this.readCache['accountId'] = this.mod.game.accountId;
             this.mod.send('C_SAVE_CLIENT_CHAT_OPTION_SETTING', 2, this.readCache);
             this.mod.command.message("Please relog to load settings.");
-            this.loginComplete = false;
         } else {
-            this.mod.command.message('No settings saved.');
+            this.mod.command.message("No settings for this account found. Please save settings before loading.");
         }
     }
 
-
     writeFile(data) {
-        fs.writeFileSync(filePath, JSON.stringify(data, undefined, 2));
+        if (!fs.existsSync(configPath)) {
+            fs.mkdirSync(configPath, { recursive: true });
+        }
+        fs.writeFileSync(path.join(configPath, `${this.mod.game.accountId}.json`), JSON.stringify(data, undefined, 2));
     }
     readFile() {
         try {
-            let data = fs.readFileSync(filePath).toString();
+            let data = fs.readFileSync(path.join(configPath, `${this.mod.game.accountId}.json`)).toString();
             data = (data !== "" ? data : undefined);
             this.readCache = JSON.parse(data);
         } catch (error) {
-            console.log("Problem reading file for chat.");
+            console.log("Could not find file for chat settings.");
         }
     }
 
