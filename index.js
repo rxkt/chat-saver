@@ -15,7 +15,7 @@ class ChatSaver {
 
     loadDefinitions() {
         this.mod.dispatch.protocol.loadCustomDefinitions(path.resolve(__dirname, 'defs'));
-        if (this.mod.dispatch.protocolVersion == 382688) this.mod.dispatch.addOpcode('C_SAVE_CLIENT_CHAT_OPTION_SETTING', 46250);
+        if (this.mod.dispatch.protocolVersion == 383529) this.mod.dispatch.addOpcode('C_SAVE_CLIENT_CHAT_OPTION_SETTING', 46250);
     }
     loadCommands() {
         this.mod.command.add('savechat', this.saveChat.bind(this));
